@@ -1,9 +1,12 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import javax.swing.Action;
 
 public class CalculatorView extends JFrame {
     private JPanel panel = new JPanel();
@@ -20,7 +23,6 @@ public class CalculatorView extends JFrame {
         output.setEditable(false);
         panel.setBounds(50, 100, 500, 400);
         panel.setLayout(new GridLayout(5,3, 10, 10));
-        
 
         for(int i = 0; i < 10; i++) {
             numberButtons[i] = new JButton(Integer.toString(i));
@@ -63,28 +65,31 @@ public class CalculatorView extends JFrame {
         this.output.setText("");
     }
 
-    boolean getNewOutput() {
+    public boolean getNewOutput() {
         return newOutput;
     }
 
-    void setNewOutput() {
+    public void setNewOutput() {
         if(newOutput)
             newOutput = false;
         else
             newOutput = true;
     }
 
-    void addNumberButtonListener(ActionListener listenButtonPress) {
-        for(int i = 0; i < 10; i++)
+    public void addNumberButtonListener(ActionListener listenButtonPress, Action numberAction) {
+        for(int i = 0; i < 10; i++) {
             numberButtons[i].addActionListener(listenButtonPress);
+            numberButtons[i].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(String.valueOf(i)), "numberAction");
+            numberButtons[i].getActionMap().put("numberAction", numberAction);
+        }
     }
 
-    void addCalculationListener(ActionListener listenButtonPress) {
+    public void addCalculationListener(ActionListener listenButtonPress) {
         for(int i = 0; i < 4; i++)
             calculationButtons[i].addActionListener(listenButtonPress);
     }
 
-    void addEqualListener(ActionListener listenButtonPress) {
+    public void addEqualListener(ActionListener listenButtonPress) {
         calculationButtons[4].addActionListener(listenButtonPress);
     }
 }

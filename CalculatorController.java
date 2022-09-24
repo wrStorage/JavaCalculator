@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.AbstractAction;
 
 public class CalculatorController {
     private CalculatorModel calculatorModel;
@@ -9,12 +10,29 @@ public class CalculatorController {
         calculatorModel = model;
         calculatorView = view;
 
-        calculatorView.addNumberButtonListener(new NumberListener());
+        calculatorView.addNumberButtonListener(new NumberListener(), new OneAction());
         calculatorView.addCalculationListener(new OperatorListener());
         calculatorView.addEqualListener(new EqualListener());
     }
 
     class NumberListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(calculatorView.getNewOutput()) {
+                calculatorView.setNewOutput();
+                calculatorView.clearOutput();
+            }
+            
+            calculatorView.setOutput(e.getActionCommand());
+
+            if(calculatorModel.getOperator() == null)
+                calculatorModel.setFirstNumber(Integer.valueOf(calculatorView.getOutput()));
+            else
+                calculatorModel.setSecondNumber(Integer.valueOf(calculatorView.getOutput()));
+        }
+    }
+
+    class OneAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(calculatorView.getNewOutput()) {
