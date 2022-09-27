@@ -15,6 +15,7 @@ public class CalculatorView extends JFrame {
     private JPanel panel = new JPanel();
     private JButton numberButtons[] = new JButton[10];
     private JButton calculationButtons[] = new JButton[5];
+    private JButton clearButton = new JButton("CLR");
     private JTextField output = new JTextField("0");
     private boolean newOutput = true;
     
@@ -25,7 +26,7 @@ public class CalculatorView extends JFrame {
         output.setBounds(50, 25, 500, 50);
         output.setEditable(false);
         panel.setBounds(50, 100, 500, 400);
-        panel.setLayout(new GridLayout(5,3, 10, 10));
+        panel.setLayout(new GridLayout(5,4, 10, 10));
 
         for(int i = 0; i < 10; i++) {
             numberButtons[i] = new JButton(Integer.toString(i));
@@ -41,6 +42,7 @@ public class CalculatorView extends JFrame {
         for(int i = 0; i < 5; i++)
             panel.add(calculationButtons[i]);
 
+        panel.add(clearButton);
         this.add(output);
         this.add(panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,5 +112,11 @@ public class CalculatorView extends JFrame {
         calculationButtons[4].getActionMap().put("equalAction", equalAction);
         calculationButtons[4].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "equalAction");
         calculationButtons[4].getActionMap().put("equalAction", equalAction);
+    }
+
+    public void addClearListener(ActionListener clearButtonPress, Action clearAction) {
+        clearButton.addActionListener(clearButtonPress);
+        clearButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearAction");
+        clearButton.getActionMap().put("clearAction", clearAction);
     }
 }

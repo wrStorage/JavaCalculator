@@ -13,6 +13,7 @@ public class CalculatorController {
         calculatorView.addNumberButtonListener(new NumberListener(), new NumberKeyboardAction());
         calculatorView.addOperatorListener(new OperatorListener(), new OperatorKeyboardAction());
         calculatorView.addEqualListener(new EqualListener(), new EqualKeyBoardAction());
+        calculatorView.addClearListener(new ClearListener(), new ClearKeyboardAction());
     }
 
     private void setNumberInput(ActionEvent number) {
@@ -84,6 +85,28 @@ public class CalculatorController {
                     calculatorView.setOutput("Err");
                 }
             }
+        }
+    }
+
+    class ClearListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            calculatorView.clearOutput();
+            calculatorView.setOutput("0");
+            calculatorModel.setFirstNumber(0);
+            calculatorModel.setSecondNumber(0);
+            calculatorModel.setOperator(null);
+        }
+    }
+
+    class ClearKeyboardAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            calculatorView.clearOutput();
+            calculatorView.setOutput("0");
+            calculatorModel.setFirstNumber(0);
+            calculatorModel.setSecondNumber(0);
+            calculatorModel.setOperator(null);
         }
     }
 }
