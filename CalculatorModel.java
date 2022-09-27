@@ -24,7 +24,7 @@ public class CalculatorModel {
             return firstNumber+= secondNumber;
         else if(operator.equals("-"))
             return firstNumber-= secondNumber;
-        else if(operator.equals("x"))
+        else if(operator.equals("*"))
             return firstNumber*= secondNumber;
         else if(operator.equals("/")) {
             if(secondNumber == 0)

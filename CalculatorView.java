@@ -6,6 +6,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import javax.swing.Action;
 
 public class CalculatorView extends JFrame {
@@ -31,7 +34,7 @@ public class CalculatorView extends JFrame {
 
         calculationButtons[0] = new JButton("+");
         calculationButtons[1] = new JButton("-");
-        calculationButtons[2] = new JButton("x");
+        calculationButtons[2] = new JButton("*");
         calculationButtons[3] = new JButton("/");
         calculationButtons[4] = new JButton("=");
 
@@ -84,12 +87,28 @@ public class CalculatorView extends JFrame {
         }
     }
 
-    public void addCalculationListener(ActionListener listenButtonPress) {
+    public void addOperatorListener(ActionListener listenButtonPress, Action operatorAction) {
         for(int i = 0; i < 4; i++)
             calculationButtons[i].addActionListener(listenButtonPress);
+
+        calculationButtons[0].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, InputEvent.SHIFT_DOWN_MASK), "plusAction");
+        calculationButtons[0].getActionMap().put("plusAction", operatorAction);
+
+        calculationButtons[1].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0), "minusAction");
+        calculationButtons[1].getActionMap().put("minusAction", operatorAction);
+
+        calculationButtons[2].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_8, InputEvent.SHIFT_DOWN_MASK), "timesAction");
+        calculationButtons[2].getActionMap().put("timesAction", operatorAction);
+
+        calculationButtons[3].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0), "divideAction");
+        calculationButtons[3].getActionMap().put("divideAction", operatorAction);
     }
 
-    public void addEqualListener(ActionListener listenButtonPress) {
+    public void addEqualListener(ActionListener listenButtonPress, Action equalAction) {
         calculationButtons[4].addActionListener(listenButtonPress);
+        calculationButtons[4].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, 0), "equalAction");
+        calculationButtons[4].getActionMap().put("equalAction", equalAction);
+        calculationButtons[4].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "equalAction");
+        calculationButtons[4].getActionMap().put("equalAction", equalAction);
     }
 }

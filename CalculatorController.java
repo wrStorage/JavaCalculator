@@ -10,42 +10,36 @@ public class CalculatorController {
         calculatorModel = model;
         calculatorView = view;
 
-        calculatorView.addNumberButtonListener(new NumberListener(), new OneAction());
-        calculatorView.addCalculationListener(new OperatorListener());
-        calculatorView.addEqualListener(new EqualListener());
+        calculatorView.addNumberButtonListener(new NumberListener(), new NumberKeyboardAction());
+        calculatorView.addOperatorListener(new OperatorListener(), new OperatorKeyboardAction());
+        calculatorView.addEqualListener(new EqualListener(), new EqualKeyBoardAction());
+    }
+
+    private void setNumberInput(ActionEvent number) {
+        if(calculatorView.getNewOutput()) {
+            calculatorView.setNewOutput();
+            calculatorView.clearOutput();
+        }
+        
+        calculatorView.setOutput(number.getActionCommand());
+
+        if(calculatorModel.getOperator() == null)
+            calculatorModel.setFirstNumber(Integer.valueOf(calculatorView.getOutput()));
+        else
+            calculatorModel.setSecondNumber(Integer.valueOf(calculatorView.getOutput()));
     }
 
     class NumberListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(calculatorView.getNewOutput()) {
-                calculatorView.setNewOutput();
-                calculatorView.clearOutput();
-            }
-            
-            calculatorView.setOutput(e.getActionCommand());
-
-            if(calculatorModel.getOperator() == null)
-                calculatorModel.setFirstNumber(Integer.valueOf(calculatorView.getOutput()));
-            else
-                calculatorModel.setSecondNumber(Integer.valueOf(calculatorView.getOutput()));
+            setNumberInput(e);
         }
     }
 
-    class OneAction extends AbstractAction {
+    class NumberKeyboardAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(calculatorView.getNewOutput()) {
-                calculatorView.setNewOutput();
-                calculatorView.clearOutput();
-            }
-            
-            calculatorView.setOutput(e.getActionCommand());
-
-            if(calculatorModel.getOperator() == null)
-                calculatorModel.setFirstNumber(Integer.valueOf(calculatorView.getOutput()));
-            else
-                calculatorModel.setSecondNumber(Integer.valueOf(calculatorView.getOutput()));
+            setNumberInput(e);
         }
     }
 
@@ -57,7 +51,29 @@ public class CalculatorController {
         }
     }
 
+    class OperatorKeyboardAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            calculatorModel.setOperator(e.getActionCommand());
+            calculatorView.setNewOutput();
+        }
+    }
+
     class EqualListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(!("Err".equals(calculatorView.getOutput())) && calculatorModel.getOperator() != null) {
+                try {
+                    calculatorView.clearOutput();
+                    calculatorView.setOutput(String.valueOf(calculatorModel.getAnswer()));
+                } catch (ArithmeticException error) {
+                    calculatorView.setOutput("Err");
+                }
+            }
+        }
+    }
+
+    class EqualKeyBoardAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(!("Err".equals(calculatorView.getOutput())) && calculatorModel.getOperator() != null) {
