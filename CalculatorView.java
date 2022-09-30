@@ -8,7 +8,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-
 import javax.swing.Action;
 
 public class CalculatorView extends JFrame {
@@ -16,6 +15,7 @@ public class CalculatorView extends JFrame {
     private JButton numberButtons[] = new JButton[10];
     private JButton calculationButtons[] = new JButton[5];
     private JButton clearButton = new JButton("CLR");
+    private JButton decimalButton = new JButton(".");
     private JTextField output = new JTextField("0");
     private boolean newOutput = true;
     
@@ -43,23 +43,30 @@ public class CalculatorView extends JFrame {
             panel.add(calculationButtons[i]);
 
         panel.add(clearButton);
+        panel.add(decimalButton);
         this.add(output);
         this.add(panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public void setOutput(String output) {
-        if(!getOutput().isEmpty()) {
-            if(getOutput().charAt(0) != '0')
-                this.output.setText(this.output.getText() + output);
+        String oldOutput = getOutput();
+        if(!oldOutput.isEmpty()) {
+            if(output.equals(".") && oldOutput.contains("."))
+                return;
+            else if(oldOutput.length() == 1 && oldOutput.startsWith("0") && output.equals("0"))
+                return;
+            else if(oldOutput.length() == 1 && oldOutput.startsWith("0") && !output.equals("0") && !output.equals("."))
+                this.output.setText(output);
             else
-                if(!output.equals("0")) {
-                    clearOutput();
-                    this.output.setText(this.output.getText() + output);
-                }
+                this.output.setText(this.output.getText() + output);
         }
-        else
-            this.output.setText(this.output.getText() + output);
+        else {
+            if(output.equals("."))
+                this.output.setText(".0");
+            else
+                this.output.setText(this.output.getText() + output);
+        }   
     }
 
     public String getOutput() {
@@ -118,5 +125,9 @@ public class CalculatorView extends JFrame {
         clearButton.addActionListener(clearButtonPress);
         clearButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearAction");
         clearButton.getActionMap().put("clearAction", clearAction);
+    }
+
+    public void addDecimalListener(ActionListener decimalButtonPress) {
+        decimalButton.addActionListener(decimalButtonPress);
     }
 }

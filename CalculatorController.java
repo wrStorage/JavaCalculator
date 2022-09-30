@@ -14,6 +14,7 @@ public class CalculatorController {
         calculatorView.addOperatorListener(new OperatorListener(), new OperatorKeyboardAction());
         calculatorView.addEqualListener(new EqualListener(), new EqualKeyBoardAction());
         calculatorView.addClearListener(new ClearListener(), new ClearKeyboardAction());
+        calculatorView.addDecimalListener(new DecimalListener());
     }
 
     private void setNumberInput(ActionEvent number) {
@@ -23,11 +24,10 @@ public class CalculatorController {
         }
         
         calculatorView.setOutput(number.getActionCommand());
-
         if(calculatorModel.getOperator() == null)
-            calculatorModel.setFirstNumber(Integer.valueOf(calculatorView.getOutput()));
+            calculatorModel.setFirstNumber(Double.valueOf(calculatorView.getOutput()));
         else
-            calculatorModel.setSecondNumber(Integer.valueOf(calculatorView.getOutput()));
+            calculatorModel.setSecondNumber(Double.valueOf(calculatorView.getOutput()));
     }
 
     class NumberListener implements ActionListener {
@@ -107,6 +107,13 @@ public class CalculatorController {
             calculatorModel.setFirstNumber(0);
             calculatorModel.setSecondNumber(0);
             calculatorModel.setOperator(null);
+        }
+    }
+
+    class DecimalListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setNumberInput(e);
         }
     }
 }

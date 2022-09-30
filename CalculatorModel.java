@@ -1,13 +1,13 @@
 public class CalculatorModel {
-    private int firstNumber = 0;
-    private int secondNumber = 0;
+    private double firstNumber = 0;
+    private double secondNumber = 0;
     private String operator = null;
 
-    public void setFirstNumber(int number) {
+    public void setFirstNumber(double number) {
         firstNumber = number;
     }
 
-    public void setSecondNumber(int number) {
+    public void setSecondNumber(double number) {
         secondNumber = number;
     }
 
@@ -19,7 +19,7 @@ public class CalculatorModel {
         return operator;
     }
 
-    public int getAnswer() {
+    public double getAnswer() {
         if(operator.equals("+"))
             return firstNumber+= secondNumber;
         else if(operator.equals("-"))
