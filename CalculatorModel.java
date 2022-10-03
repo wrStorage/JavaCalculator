@@ -2,6 +2,7 @@ public class CalculatorModel {
     private double firstNumber = 0;
     private double secondNumber = 0;
     private String operator = null;
+    
 
     public void setFirstNumber(double number) {
         firstNumber = number;

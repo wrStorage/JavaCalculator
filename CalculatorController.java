@@ -14,7 +14,10 @@ public class CalculatorController {
         calculatorView.addOperatorListener(new OperatorListener(), new OperatorKeyboardAction());
         calculatorView.addEqualListener(new EqualListener(), new EqualKeyBoardAction());
         calculatorView.addClearListener(new ClearListener(), new ClearKeyboardAction());
-        calculatorView.addDecimalListener(new DecimalListener());
+        calculatorView.addDecimalListener(new DecimalListener(), new DecimalKeyboardAction());
+        calculatorView.addBackspaceListener(new BackspaceListener());
+        calculatorView.addPlusMinusListener(new PlusMinusListener());
+        calculatorView.addPercentListener(new PercentListener());
     }
 
     private void setNumberInput(ActionEvent number) {
@@ -114,6 +117,42 @@ public class CalculatorController {
         @Override
         public void actionPerformed(ActionEvent e) {
             setNumberInput(e);
+        }
+    }
+
+    class DecimalKeyboardAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setNumberInput(e);
+        }
+    }
+
+    class BackspaceListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            calculatorView.deleteCharacter();
+        }
+    }
+
+    class PlusMinusListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            calculatorView.changeSign();
+            if(calculatorModel.getOperator() == null)
+                calculatorModel.setFirstNumber(Double.valueOf(calculatorView.getOutput()));
+            else
+                calculatorModel.setSecondNumber(Double.valueOf(calculatorView.getOutput()));
+        }
+    }
+
+    class PercentListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            calculatorView.changeToPercent();
+            if(calculatorModel.getOperator() == null)
+                calculatorModel.setFirstNumber(Double.valueOf(calculatorView.getOutput()));
+            else
+                calculatorModel.setSecondNumber(Double.valueOf(calculatorView.getOutput()));
         }
     }
 }
