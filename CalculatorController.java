@@ -99,6 +99,7 @@ public class CalculatorController {
             calculatorModel.setFirstNumber(0);
             calculatorModel.setSecondNumber(0);
             calculatorModel.setOperator(null);
+            calculatorModel.resetSubsequent();
         }
     }
 
@@ -110,6 +111,7 @@ public class CalculatorController {
             calculatorModel.setFirstNumber(0);
             calculatorModel.setSecondNumber(0);
             calculatorModel.setOperator(null);
+            calculatorModel.resetSubsequent();
         }
     }
 
@@ -131,6 +133,10 @@ public class CalculatorController {
         @Override
         public void actionPerformed(ActionEvent e) {
             calculatorView.deleteCharacter();
+            if(calculatorModel.getOperator() == null || calculatorModel.isSubsequent())
+                calculatorModel.setFirstNumber(Double.valueOf(calculatorView.getOutput()));
+            else
+                calculatorModel.setSecondNumber(Double.valueOf(calculatorView.getOutput()));
         }
     }
 
@@ -138,7 +144,7 @@ public class CalculatorController {
         @Override
         public void actionPerformed(ActionEvent e) {
             calculatorView.changeSign();
-            if(calculatorModel.getOperator() == null)
+            if(calculatorModel.getOperator() == null || calculatorModel.isSubsequent())
                 calculatorModel.setFirstNumber(Double.valueOf(calculatorView.getOutput()));
             else
                 calculatorModel.setSecondNumber(Double.valueOf(calculatorView.getOutput()));
@@ -149,7 +155,7 @@ public class CalculatorController {
         @Override
         public void actionPerformed(ActionEvent e) {
             calculatorView.changeToPercent();
-            if(calculatorModel.getOperator() == null)
+            if(calculatorModel.getOperator() == null || calculatorModel.isSubsequent())
                 calculatorModel.setFirstNumber(Double.valueOf(calculatorView.getOutput()));
             else
                 calculatorModel.setSecondNumber(Double.valueOf(calculatorView.getOutput()));

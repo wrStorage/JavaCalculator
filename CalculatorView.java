@@ -4,9 +4,10 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.Action;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import javax.swing.Action;
+import java.awt.Font;
 
 public class CalculatorView extends JFrame {
     private JPanel panel = new JPanel();
@@ -59,8 +60,11 @@ public class CalculatorView extends JFrame {
         panel.add(decimalButton);
         panel.add(calculationButtons[4]);
 
+        output.setFont(new Font("Dialog", Font.PLAIN, 32));
+
         this.add(output);
         this.add(panel);
+        this.setTitle("Calculator");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -88,6 +92,9 @@ public class CalculatorView extends JFrame {
         String oldOutput = getOutput();
         if(oldOutput.length() == 1)
             this.output.setText("0");
+        else if(oldOutput.length() == 2 && (oldOutput.startsWith(".") || oldOutput.startsWith("-"))) {
+            this.output.setText("0");
+        }
         else
             this.output.setText(oldOutput.substring(0, oldOutput.length() - 1));
     }
